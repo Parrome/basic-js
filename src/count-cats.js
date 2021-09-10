@@ -16,9 +16,7 @@ import { NotImplementedError } from '../extensions/index.js';
  */
 export default function countCats(matrix) {
   let result = 0;
-  matrix.forEach ( fiendCat =>{
-    result += fiendCat.filter( ears => ears === '^^').length;
-  });
+  matrix.forEach ( fiendCat => result += fiendCat.filter( ears => ears === '^^').length);
   return result;
 
 }
