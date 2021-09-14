@@ -17,7 +17,7 @@ import { NotImplementedError } from '../extensions/index.js';
 export default function calculateHanoi(disksNumber, turnsSpeed) {
 
 const turns =  (2 ** disksNumber) - 1 ;
-const seconds = Math.floor((turnsSpeed / 3600) * turns);
+const seconds = Math.floor(turns / (turnsSpeed / 3600));
 
 return {
   turns,
