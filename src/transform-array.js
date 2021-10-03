@@ -13,7 +13,62 @@ import { NotImplementedError } from '../extensions/index.js';
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-export default function transform(/* arr */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+ export default function transform(arr) {
+  if (!Array.isArray(arr))
+    throw new Error("'arr' parameter must be an instance of the Array!");
+
+  let newArr = [...arr];
+  for (let i = 0; i < newArr.length; i++) {
+    if (examination(newArr[i]))
+      newArr = application(newArr[i], i, newArr);
+  }
+  return newArr.filter((item) => item);
+}
+
+function examination(arrElem) {
+  return /^--/.test(arrElem);
+}
+
+function application(sequence, arrIndex, newArr) {
+  switch (sequence) {
+    case '--discard-next':
+      if (arrIndex === newArr.length - 1) newArr = newArr.slice(0, arrIndex);
+      else
+        newArr = [
+          ...newArr.slice(0, arrIndex),
+          undefined,
+          ...newArr.slice(arrIndex + 2),
+        ];
+      break;
+    case '--discard-prev':
+      if (arrIndex === 0) newArr = newArr.slice(1);
+      else
+        newArr = [
+          ...newArr.slice(0, arrIndex - 1),
+          undefined,
+          ...newArr.slice(arrIndex + 1),
+        ];
+      break;
+    case '--double-next':
+      if (arrIndex === newArr.length - 1) newArr = newArr.slice(0, arrIndex);
+      else
+        newArr = [
+          ...newArr.slice(0, arrIndex),
+          newArr[arrIndex + 1],
+          ...newArr.slice(arrIndex + 1),
+        ];
+      break;
+    case '--double-prev':
+      if (arrIndex === 0) newArr = newArr.slice(1);
+      else
+        newArr = [
+          ...newArr.slice(0, arrIndex),
+          newArr[arrIndex - 1],
+          ...newArr.slice(arrIndex + 1),
+        ];
+      break;
+    default:
+      break;
+  }
+  return newArr;
 }
